@@ -4,12 +4,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    nome:{
+    nome: {
         type: String,
         required: true,
         trim: true
-    }
+    },
+    alunos: [{
+        nome: String
+    }]
 });
 
-module.exports = mongoose.model('Aluno', schema);
-
+module.exports = mongoose.model('Turma', schema);
