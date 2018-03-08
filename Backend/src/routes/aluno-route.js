@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const controller = require('../controller/aluno-controller');
+const controller = require('../controller/aluno-controller.js');
 
 router.post('/', controller.post);
 
