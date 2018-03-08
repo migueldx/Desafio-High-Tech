@@ -8,10 +8,8 @@ const schema = new Schema({
         type: String,
         required: true,
         trim: true
-    },
-    alunos: [{
-        nome: String
-    }]
+    }
+   
 });
 
 module.exports = mongoose.model('Turma', schema);

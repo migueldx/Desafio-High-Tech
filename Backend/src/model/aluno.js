@@ -14,7 +14,7 @@ const schema = new Schema({
         type: String,
         required: true,
         trim: true
-    }
+    } 
 });
 
 module.exports = mongoose.model('Aluno', schema);
