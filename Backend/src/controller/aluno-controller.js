@@ -10,13 +10,48 @@ exports.post = (req, res, next) => {
         .then(x => {
             res.status(201).send({ message: 'Produto cadastrado com sucesso!' });
         }).catch(e => {
-            res.status(400).send({ 
+            res.status(400).send({
                 message: 'Falha ao cadastrar produto!',
-                data: e 
+                data: e
             });
 
         });
 
+};
+
+exports.get = (req, res, next) => {
+    Aluno
+        .find({}, 'ra nome')
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+
+        });;
+};
+
+exports.getByRa = (req, res, next) => {
+    Aluno
+        .findOne({
+            ra: req.params.ra
+        }, 'ra nome')
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+
+        });;
+};
+
+exports.getById = (req, res, next) => {
+    Aluno
+        .findById(req.params.id)
+        .then(data => {
+            res.status(200).send(data);
+        }).catch(e => {
+            res.status(400).send(e);
+
+        });;
 };
 
 exports.put = (req, res, next) => {
