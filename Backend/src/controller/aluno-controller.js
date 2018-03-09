@@ -1,7 +1,5 @@
 'use strict'
 
-const mongoose = require('mongoose');
-const Aluno = mongoose.model('Aluno');
 const repository = require('../repository/aluno-repository');
 
 exports.post = async (req, res, next) => {

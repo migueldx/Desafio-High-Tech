@@ -42,7 +42,7 @@ exports.update = async (id, data) => {
         .findByIdAndUpdate(id, {
             $set: {
                 nome: data.nome
-            }
+            },
         });
 }
 

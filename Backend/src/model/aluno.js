@@ -14,7 +14,13 @@ const schema = new Schema({
         type: String,
         required: true,
         trim: true
-    } 
+    },
+    turmas: [{
+         turma: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Turma'
+        },
+    }] 
 });
 
 module.exports = mongoose.model('Aluno', schema);

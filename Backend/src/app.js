@@ -12,11 +12,15 @@ mongoose.connect('mongodb://miguel:miguel@ds012578.mlab.com:12578/desafiohightec
 
 //Carrega os Models
 const Aluno = require('./model/aluno')
+const Aula = require('./model/aula')
+const Turma = require('./model/turma')
+
 
 //Carrega as Rotas
 const indexRoute = require('./routes/index-route');
 const alunoRoute = require('./routes/aluno-route');
 const turmaRoute = require('./routes/turma-route');
+const aulaRoute = require('./routes/aula-route');
 
 
 app.use(bodyParser.json());
@@ -25,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', indexRoute);
 app.use('/aluno', alunoRoute);
 app.use('/turma', turmaRoute);
+app.use('/aula', aulaRoute);
 
 
 module.exports = app;

@@ -8,8 +8,12 @@ const schema = new Schema({
         type: String,
         required: true,
         trim: true
-    }
-   
+    },
+    alunos: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Aluno'
+        
+    }]
 });
 
 module.exports = mongoose.model('Turma', schema);
