@@ -8,10 +8,10 @@ exports.post = (req, res, next) => {
     aluno
         .save()
         .then(x => {
-            res.status(201).send({ message: 'Produto cadastrado com sucesso!' });
+            res.status(201).send({ message: 'Aluno cadastrado com sucesso!' });
         }).catch(e => {
             res.status(400).send({
-                message: 'Falha ao cadastrar produto!',
+                message: 'Falha ao cadastrar Aluno!',
                 data: e
             });
 
@@ -69,18 +69,32 @@ exports.getByTag = (req, res, next) => {
 
 exports.put = (req, res, next) => {
      Aluno
-        .findByIdAndUpdate ({
-            ra: req.params.ra
-        }, 'ra nome')
-        .then(data => {
-            res.status(200).send(data);
+        .findByIdAndUpdate (req.params.id, {
+            $set:{
+                nome: req.body.nome
+            }
+        }).then(x => {
+            res.status(201).send({message: 'Aluno atualizado com sucesso!'});
         }).catch(e => {
-            res.status(400).send(e);
+            res.status(400).send({
+                message: 'Falha ao atualizar Aluno',
+                data: e
+            });
 
         });;
 };
 
 exports.delete = (req, res, next) => {
-    res.status(200).send(req.body);
+     Aluno
+        .findOneAndRemove (req.body.id)
+        .then(x => {
+            res.status(200).send({message: 'Aluno removido com sucesso!'});
+        }).catch(e => {
+            res.status(400).send({
+                message: 'Falha ao remover Aluno',
+                data: e
+            });
+
+        });;
 };
 
