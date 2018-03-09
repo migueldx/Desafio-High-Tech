@@ -10,9 +10,11 @@ const schema = new Schema({
         trim: true
     },
     alunos: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Aluno'
-        
+        aluno: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Aluno'
+        },
+
     }]
 });
 

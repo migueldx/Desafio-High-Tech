@@ -8,9 +8,9 @@ exports.create = async (data) => {
     await turma.save();
 }
 
-
 exports.get = async () => {
     const res = await Turma
-        .find({});
+        .find({}, 'alunos nome')
+        .populate('alunos.aluno', 'ra nome');
     return res;
 }
