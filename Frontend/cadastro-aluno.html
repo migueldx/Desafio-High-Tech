@@ -2,16 +2,18 @@
 <html lang="pt-br">
 
 <head>
-   
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
 </head>
 
 <body>
     <div id="application">
         <form>
             <h2>Cadastrar Aluno</h2>
-             <label>Ra</label>
+            <!--<label>Ra</label>
             <input type="text" id="input-ra" v-model="aluno.ra" placeholder="Ra">
-            <br>
+            <br>-->
             <label>Nome</label>
             <input type="text" id="input-nome" v-model="aluno.nome" placeholder="Nome">
             <button v-on:click="cadastrar">Salvar</button>
@@ -23,12 +25,12 @@
     var app = new Vue({
         el: '#application',
         data: {
-            aluno: {_id: "", ra:"", nome: "" },
+            aluno: { _id: "", nome: "" },
             alunos: []
         },
         methods: {
             cadastrar: function () {
-                this.$http.post("http://localhost:3000/aluno/", this.aluno).then(function (response) {
+                this.$http.post("localhost:3000/aluno/", this.aluno).then(function (response) {
                     this.alunos.push(response.body);
                 }, function (response) {
                     window.alert("nao funcionou");
