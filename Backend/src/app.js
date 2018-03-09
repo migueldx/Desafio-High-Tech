@@ -3,12 +3,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const config = require('./config');
+
 
 const app = express();
 const router = express.Router();
 
 //Conectaao banco
-mongoose.connect('mongodb://miguel:miguel@ds012578.mlab.com:12578/desafiohightech');
+mongoose.connect(config.connectionString);
 
 //Carrega os Models
 const Aluno = require('./model/aluno')

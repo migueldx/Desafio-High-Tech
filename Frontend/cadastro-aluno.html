@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+   
+</head>
+
+<body>
+    <div id="application">
+        <form>
+            <h2>Cadastrar Aluno</h2>
+             <label>Ra</label>
+            <input type="text" id="input-ra" v-model="aluno.ra" placeholder="Ra">
+            <br>
+            <label>Nome</label>
+            <input type="text" id="input-nome" v-model="aluno.nome" placeholder="Nome">
+            <button v-on:click="cadastrar">Salvar</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#application',
+        data: {
+            aluno: {_id: "", ra:"", nome: "" },
+            alunos: []
+        },
+        methods: {
+            cadastrar: function () {
+                this.$http.post("http://localhost:3000/aluno/", this.aluno).then(function (response) {
+                    this.alunos.push(response.body);
+                }, function (response) {
+                    window.alert("nao funcionou");
+                })
+            }
+        },
+    });
+
+</script>
+
+</html>
