@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="./css/folha-estilos.css">
+    <link rel="stylesheet"  src="./css/folha-estilos.css">
 
 
 </head>
@@ -20,12 +20,11 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">High Tech Cursos</a>
+                <a class="navbar-brand" href="./home.html">High Tech Cursos</a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="./cadastro-aluno.html">Cadastro de Alunos</a></li>
-                <li><a href="./cadastro-turma.html">Cadastro de Turmas</a></li>
-                <li><a href="#">Cadastro de Aulas</a></li>
+                <li class="active"><a href="./cadastro-aluno.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Alunos</a></li>
+                <li><a href="./cadastro-turma.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Turmas</a></li>
                 <li><a href="#">Lista de Presença</a></li>
             </ul>
         </div>
@@ -52,7 +51,7 @@
         </form>
         
             <h2><br>Registros</h2>
-            <table class="table table-bordered table-striped">
+            <table id="table" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>RA</th>

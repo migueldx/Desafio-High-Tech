@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="./css/folha-estilos.css">
+    <link rel="stylesheet" src="./css/folha-estilos.css">
 </head>
 
 <body>
@@ -17,12 +17,11 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">High Tech Cursos</a>
+                <a class="navbar-brand" href="./home.html">High Tech Cursos</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="./cadastro-aluno.html">Cadastro de Alunos</a></li>
-                <li class="active"><a href="./cadastro-turma.html">Cadastro de Turmas</a></li>
-                <li><a href="#">Cadastro de Aulas</a></li>
+                <li><a href="./cadastro-aluno.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Alunos</a></li>
+                <li class="active"><a href="./cadastro-turma.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Turmas</a></li>
                 <li><a href="#">Lista de Presença</a></li>
             </ul>
         </div>
@@ -34,7 +33,7 @@
             <h2>Cadastro de Turmas</h2>
             <div class="input-group">
                 <span class="input-group-addon">Nome</span>
-                <input id="input-nome" type="text" v-model="turma.nome" class="form-control" name="msg" placeholder="Digite o nome do aluno">
+                <input id="input-nome" type="text" v-model="turma.nome" class="form-control" name="msg" placeholder="Digite o nome da turma">
             </div>
 
             <br>
@@ -43,22 +42,22 @@
             </div>
 
         </form>
-        
-            <h2><br>Registros</h2>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>NOME</th>
-                        <th>ALUNOS</th>
-                    </tr>
-                </thead>
-                <tbody v-for="turma in turmas">
-                    <tr>
-                        <td>{{turma.nome}} </td>
-                        <td v-for="aluno in alunos">{{aluno.nome}}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <h2><br>Registros</h2>
+        <table id="table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>NOME</th>
+                    <th>ALUNOS</th>
+                </tr>
+            </thead>
+            <tbody v-for="turma in turmas">
+                <tr>
+                    <td>{{turma.nome}} </td>
+                    <td ><div v-for="aluno in listarAlunosTurma(turmas, turma._id)">{{aluno}} </div></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 
@@ -66,12 +65,25 @@
     var app = new Vue({
         el: '#application',
         data: {
+            listarAlunosTurma: function (turmas, turmaId) {
+                arrayString = new Array;
+                for (i = 0; i < turmas.length; i++) {
+                    for (j = 0; j < turmas[i].alunos.length; j++) {
+                        if(turmas[i]._id == turmaId){
+                          arrayString.push(turmas[i].alunos[j].aluno.nome);
+                        }
+                    }
+                }
+                console.log(arrayString);
+                return arrayString;
+            },
+            turma: { id: "", nome: "", alunos: [{aluno: { id: "", ra: "", nome: "" }}] },
             aluno: { id: "", ra: "", nome: "" },
-            alunos: []
+            turmas: [],
         },
         created: function () {
-            this.$http.get("http://localhost:8081/aluno/").then(function (response) {
-                this.alunos = response.body;
+            this.$http.get("http://localhost:8081/turma/").then(function (response) {
+                this.turmas = response.body;
             }, function (response) {
                 console.log("nao funcionou");
             })
@@ -83,7 +95,9 @@
                 }, function (response) {
                     console.log("nao funcionou");
                 })
-            }
+            },
+
+
         },
     });
 
