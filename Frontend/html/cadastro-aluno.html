@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet"  src="./css/folha-estilos.css">
-
-
+    <link rel="stylesheet" src="./css/folha-estilos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="./cadastro-aluno.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Alunos</a></li>
                 <li><a href="./cadastro-turma.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Turmas</a></li>
-                <li><a href="#">Lista de Presença</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> Lista de Presença</a></li>
             </ul>
         </div>
     </nav>
@@ -37,34 +37,31 @@
             <div class="input-group">
                 <span class="input-group-addon">Ra</span>
                 <input id="input-ra" type="text" v-model="aluno.ra" class="form-control" name="msg" placeholder="Digite o RA do aluno">
-            </div>
+            </div><br>
             <div class="input-group">
                 <span class="input-group-addon">Nome</span>
                 <input id="input-nome" type="text" v-model="aluno.nome" class="form-control" name="msg" placeholder="Digite o nome do aluno">
-            </div>
-
-            <br>
+            </div><br>
             <div>
                 <button v-on:click="cadastrar" class="btn btn-success btn-lg pull-left">Salvar</button>
             </div>
-
         </form>
-        
-            <h2><br>Registros</h2>
-            <table id="table" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>RA</th>
-                        <th>NOME</th>
-                    </tr>
-                </thead>
-                <tbody v-for="aluno in alunos">
-                    <tr>
-                        <td>{{aluno.ra}} </td>
-                        <td>{{aluno.nome}}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <h2><br>Registros</h2>
+        <table id="table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>RA</th>
+                    <th>NOME</th>
+                </tr>
+            </thead>
+            <tbody v-for="aluno in alunos">
+                <tr>
+                    <td>{{aluno.ra}} </td>
+                    <td>{{aluno.nome}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 
@@ -73,11 +70,22 @@
         el: '#application',
         data: {
             aluno: { id: "", ra: "", nome: "" },
-            alunos: []
+            turma: { id: "", nome: "", alunos: [{ aluno: { id: "", ra: "", nome: "" } }] },
+            alunos: [],
+            turmas: [],
+            selectedTurma: null,
+            selectedAluno
         },
-        created: function () {
+        created:
+        function () {
             this.$http.get("http://localhost:8081/aluno/").then(function (response) {
                 this.alunos = response.body;
+            }, function (response) {
+                console.log("nao funcionou");
+            })
+
+            this.$http.get("http://localhost:8081/turma/").then(function (response) {
+                this.turmas = response.body;
             }, function (response) {
                 console.log("nao funcionou");
             })

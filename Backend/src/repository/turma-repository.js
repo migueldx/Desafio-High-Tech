@@ -8,6 +8,15 @@ exports.create = async (data) => {
     await turma.save();
 }
 
+exports.update = async (idTurma, data) => {
+    await Turma
+        .findByIdAndUpdate(idTurma, {
+            $set: {
+                alunos: [data]
+            },
+        });
+}
+
 exports.get = async () => {
     const res = await Turma
         .find({}, 'alunos nome')

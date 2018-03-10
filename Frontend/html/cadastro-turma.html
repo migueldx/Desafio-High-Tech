@@ -22,26 +22,47 @@
             <ul class="nav navbar-nav">
                 <li><a href="./cadastro-aluno.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Alunos</a></li>
                 <li class="active"><a href="./cadastro-turma.html"><span class="glyphicon glyphicon-plus"></span> Cadastro de Turmas</a></li>
-                <li><a href="#">Lista de Presença</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> Lista de Presença</a></li>
             </ul>
         </div>
     </nav>
     <!-- FIM Barra de Navegaçao-->
 
     <div id="application" class="container">
-        <form>
-            <h2>Cadastro de Turmas</h2>
-            <div class="input-group">
-                <span class="input-group-addon">Nome</span>
-                <input id="input-nome" type="text" v-model="turma.nome" class="form-control" name="msg" placeholder="Digite o nome da turma">
-            </div>
+        <div class="container pull right">
+            <form>
+                <h2>Cadastro de Turmas</h2>
+                <div class="input-group">
+                    <span class="input-group-addon">Nome</span>
+                    <input id="input-nome" type="text" v-model="turma.nome" class="form-control" name="msg" placeholder="Digite o nome da turma">
+                </div><br>
+                <div>
+                    <button v-on:click="cadastrar" class="btn btn-success btn-lg pull-left">Cadastrar Turma</button>
+                </div><br><br>
+            </form>
+        </div>
+        <div class="container pull-left">
+            <form>
+                <h2>Cadastro de Aluno na Turma</h2>
 
-            <br>
-            <div>
-                <button v-on:click="cadastrar" class="btn btn-success btn-lg pull-left">Salvar</button>
-            </div>
+                <div class="input-group"><label>Selecione o Aluno: </label>
+                    <select v-model="selectedAluno" :options="alunos" class="mb-3">
+                    <option v-for="aluno in alunos">{{aluno.nome}}</option>
+                </select><br>
+                </div>
 
-        </form>
+                <div class="input-group"><label>Selecione a Turma: </label>
+                    <select v-model="selectedTurma" :options="turmas" class="mb-3">
+                    <option v-for="turma in turmas">{{turma.nome}}</option>
+                </select><br>
+                </div><br>
+
+                <div>
+                    <button v-on:click="cadastrarTurmaAluno" class="btn btn-success btn-lg">Cadastrar Aluno</button>
+                </div><br>
+            </form>
+        </div>
+
 
         <h2><br>Registros</h2>
         <table id="table" class="table table-bordered table-striped">
@@ -54,7 +75,9 @@
             <tbody v-for="turma in turmas">
                 <tr>
                     <td>{{turma.nome}} </td>
-                    <td ><div v-for="aluno in listarAlunosTurma(turmas, turma._id)">{{aluno}} </div></td>
+                    <td>
+                        <div v-for="aluno in listarAlunosTurma(turmas, turma._id)">{{aluno}} </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -69,17 +92,20 @@
                 arrayString = new Array;
                 for (i = 0; i < turmas.length; i++) {
                     for (j = 0; j < turmas[i].alunos.length; j++) {
-                        if(turmas[i]._id == turmaId){
-                          arrayString.push(turmas[i].alunos[j].aluno.nome);
+                        if (turmas[i]._id == turmaId) {
+                            arrayString.push(turmas[i].alunos[j].aluno.nome);
                         }
                     }
                 }
-                console.log(arrayString);
                 return arrayString;
             },
-            turma: { id: "", nome: "", alunos: [{aluno: { id: "", ra: "", nome: "" }}] },
+            turma: { id: "", nome: "", alunos: [] },
             aluno: { id: "", ra: "", nome: "" },
             turmas: [],
+            alunos: [{ aluno: { id: "", ra: "", nome: "" } }],
+            selectedAluno: { id: "", ra: "", nome: "" },
+            selectedTurma: { id: "", nome: "", alunos: [] },
+            idTurma: null
         },
         created: function () {
             this.$http.get("http://localhost:8081/turma/").then(function (response) {
@@ -87,13 +113,41 @@
             }, function (response) {
                 console.log("nao funcionou");
             })
+
+            this.$http.get("http://localhost:8081/aluno/").then(function (response) {
+                this.alunos = response.body;
+            }, function (response) {
+                console.log("nao funcionou");
+            })
         },
         methods: {
             cadastrar: function () {
-                this.$http.post("http://localhost:8081/aluno/", this.aluno).then(function (response) {
-                    this.alunos.push(response.body);
+                this.$http.post("http://localhost:8081/turma/", this.turma).then(function (response) {
+                    this.turmas.push(response.body);
                 }, function (response) {
                     console.log("nao funcionou");
+                })
+            },
+            cadastrarTurmaAluno: function () {
+                
+                for(i=0;i<this.turmas.length;i++){
+                    if(this.turmas[i].nome == this.selectedTurma){
+                        this.idTurma = turmas[i]._id;
+                    }
+                }
+                for(i=0;i<this.alunos.length;i++){
+                    if(this.alunos[i].aluno.nome == this.selectedAluno){
+                        this.aluno = alunos[i];
+                    }
+                }
+                console.log(this.idTurma);
+                    console.log(this.aluno);
+                this.$http.post("http://localhost:8081/turma/aluno/"+ this.idTurma, this.aluno).then(function (response) {
+                      console.log(this.idTurma);
+                    console.log(this.aluno);
+                }, function (response) {
+                    console.log(this.idTurma);
+                    console.log(this.aluno);
                 })
             },
 
