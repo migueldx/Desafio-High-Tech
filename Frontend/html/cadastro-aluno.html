@@ -70,11 +70,9 @@
         el: '#application',
         data: {
             aluno: { id: "", ra: "", nome: "" },
-            turma: { id: "", nome: "", alunos: [{ aluno: { id: "", ra: "", nome: "" } }] },
+            turma: { id: "", nome: "", alunos: [] },
             alunos: [],
-            turmas: [],
-            selectedTurma: null,
-            selectedAluno
+            turmas: []
         },
         created:
         function () {

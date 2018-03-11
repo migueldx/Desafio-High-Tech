@@ -47,16 +47,14 @@
 
                 <div class="input-group"><label>Selecione o Aluno: </label>
                     <select v-model="selectedAluno" :options="alunos" class="mb-3">
-                    <option v-for="aluno in alunos">{{aluno.nome}}</option>
+                    <option v-for="aluno in alunos" v-bind:value="aluno">{{aluno.nome}}</option>
                 </select><br>
                 </div>
-
                 <div class="input-group"><label>Selecione a Turma: </label>
                     <select v-model="selectedTurma" :options="turmas" class="mb-3">
-                    <option v-for="turma in turmas">{{turma.nome}}</option>
+                    <option v-for="turma in turmas" v-bind:value="turma._id">{{turma.nome}}</option>
                 </select><br>
                 </div><br>
-
                 <div>
                     <button v-on:click="cadastrarTurmaAluno" class="btn btn-success btn-lg">Cadastrar Aluno</button>
                 </div><br>
@@ -93,7 +91,7 @@
                 for (i = 0; i < turmas.length; i++) {
                     for (j = 0; j < turmas[i].alunos.length; j++) {
                         if (turmas[i]._id == turmaId) {
-                            arrayString.push(turmas[i].alunos[j].aluno.nome);
+                            arrayString.push(turmas[i].alunos[j].nome);
                         }
                     }
                 }
@@ -102,9 +100,9 @@
             turma: { id: "", nome: "", alunos: [] },
             aluno: { id: "", ra: "", nome: "" },
             turmas: [],
-            alunos: [{ aluno: { id: "", ra: "", nome: "" } }],
-            selectedAluno: { id: "", ra: "", nome: "" },
-            selectedTurma: { id: "", nome: "", alunos: [] },
+            alunos: [{ id: "", ra: "", nome: "" }],
+            selectedAluno: null,
+            selectedTurma: null,
             idTurma: null
         },
         created: function () {
@@ -125,33 +123,15 @@
                 this.$http.post("http://localhost:8081/turma/", this.turma).then(function (response) {
                     this.turmas.push(response.body);
                 }, function (response) {
-                    console.log("nao funcionou");
+                    console.log(this.turma);
                 })
             },
             cadastrarTurmaAluno: function () {
-                
-                for(i=0;i<this.turmas.length;i++){
-                    if(this.turmas[i].nome == this.selectedTurma){
-                        this.idTurma = turmas[i]._id;
-                    }
-                }
-                for(i=0;i<this.alunos.length;i++){
-                    if(this.alunos[i].aluno.nome == this.selectedAluno){
-                        this.aluno = alunos[i];
-                    }
-                }
-                console.log(this.idTurma);
-                    console.log(this.aluno);
-                this.$http.post("http://localhost:8081/turma/aluno/"+ this.idTurma, this.aluno).then(function (response) {
-                      console.log(this.idTurma);
-                    console.log(this.aluno);
+                this.$http.put("http://localhost:8081/turma/aluno/"+ this.selectedTurma, this.selectedAluno).then(function (response) {
                 }, function (response) {
-                    console.log(this.idTurma);
-                    console.log(this.aluno);
+                    console.log("nao funcionou");
                 })
             },
-
-
         },
     });
 
