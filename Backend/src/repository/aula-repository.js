@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const Aula = mongoose.model('Aula');
+const Turma = mongoose.model('Turma');
 
 exports.create = async (data) => {
     var aula = new Aula(data);
@@ -12,7 +13,7 @@ exports.create = async (data) => {
 exports.get = async () => {
     const res = await Aula
         .find({}, 'nome data listaPresenca turma')
-        .populate('turma', 'alunos nome')
-        .populate('listaPresenca.aluno', 'nome');
+        .populate('listaPresenca.aluno')
+        .populate('turma');
     return res;
 }

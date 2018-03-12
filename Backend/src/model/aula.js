@@ -4,11 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    turma: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Turma'
-    },
-
+   
     nome: {
         type: String,
         required: true,
@@ -21,10 +17,10 @@ const schema = new Schema({
     },
 
     listaPresenca: [{
-        aluno: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Aluno'
-        },
+        aluno:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Aluno'},
+
 
         situacao: {
             type: String,
@@ -32,7 +28,12 @@ const schema = new Schema({
             enum: ['Presente', 'Ausente'],
             default: 'Presente'
         },
-    }]
+    }],
+     turma:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Turma'}
+   
+
 
 });
 

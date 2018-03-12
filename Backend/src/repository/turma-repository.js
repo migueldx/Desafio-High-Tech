@@ -21,3 +21,4 @@ exports.get = async () => {
         .populate('alunos', 'ra nome');
     return res;
 }
+

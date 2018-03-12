@@ -12,7 +12,7 @@ const schema = new Schema({
     alunos: [{
         
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Aluno'
+            ref: 'Aluno',
             // default: null
         
         
