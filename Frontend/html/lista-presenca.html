@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" src="./css/folha-estilos.css">
+    <script href="../src/node_modules/jquery/src/jquery.js"></script>
 </head>
 
 <body>
@@ -39,22 +40,26 @@
                 <div class="input-group">
                     <span class="input-group-addon">Data</span>
                     <input id="input-data" type="date" v-model="aula.data" class="form-control" name="msg">
-                    {{aula.data}}
                 </div><br>
                 <div class="input-group"><label>Selecione a Turma: </label>
-                    <select v-model="selectedTurma" :options="turmas" class="form-control"> 
-                    <option v-for="turma in turmas" v-bind:value="turma._id">{{turma.nome}}</option>
+                    <select v-model="aula.turma" :options="turmas" class="form-control" @change="popularListaPresenca(aula.turma.alunos)"> 
+                    <option v-for="turma in turmas" v-bind:value="turma">{{turma.nome}}</option>
                 </select><br>
                 </div><br>
+                <label>Alunos 
+                <div class="input-group" v-for="situacaoAluno in listaPresenca">
+                    <span class="input-group-addon">{{situacaoAluno.aluno.nome}}</span>
+                    <input id="input-situacao" type="text" class="form-control" v-model="situacaoAluno.situacao">
+                </div><br></label>
                 <div>
                     <button v-on:click="cadastrar" class="btn btn-success btn-lg pull-left">Cadastrar Aula</button>
                 </div><br><br>
             </form>
         </div>
         <h2><br>Lista de presença</h2>
-        <div v-for="aula in aulas">
-            <h3><br>{{aula.nome}} - {{formatarData(aula.data)}}</h3>
-             <h4><br>{{aula.turma.nome}}</h4>
+        <div v-for="aulaLista in aulas">
+            <h3><br>{{aulaLista.nome}} - {{aulaLista.data}}</h3>
+            <h4><br>{{aulaLista.turma.nome}}</h4>
             <table id="table" class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -62,10 +67,9 @@
                         <th>PRESENÇA</th>
                     </tr>
                 </thead>
-                <tbody v-for="presenca in aula.listaPresenca">
+                <tbody v-for="presenca in aulaLista.listaPresenca">
                     <tr>
                         <td>
-                            <!--<div v-for="aluno in listarAlunosTurma(turmas, turma._id)">{{aluno}}</div>-->
                             {{presenca.aluno.nome}}
                         </td>
                         <td>{{presenca.situacao}} </td>
@@ -80,60 +84,44 @@
     var app = new Vue({
         el: '#application',
         data: {
-            popularAtributosAula: function (turmas, turmaId) {
-                arrayString = new Array;
-                for (i = 0; i < turmas.length; i++) {
-                    for (j = 0; j < turmas[i].alunos.length; j++) {
-                        if (turmas[i]._id == turmaId) {
-                            arrayString.push(turmas[i].alunos[j].nome);
-                        }
-                    }
-                }
-                return arrayString;
-            },
+
             turma: { id: "", nome: "", alunos: [] },
             aluno: { id: "", ra: "", nome: "" },
             turmas: [],
             alunos: [{ id: "", ra: "", nome: "" }],
-            selectedAluno: null,
-            selectedTurma: null,
-            aula: { id: "", nome: "", data: new Date(), turma: {}, listaPresenca: [] },
-            aulas: []
+            aula: { id: "", nome: "", data: "", turma: {}, listaPresenca: [] },
+            aulaLista: { id: "", nome: "", data: "", turma: {}, listaPresenca: [] },
+            aulas: [],
+            listaPresenca: [],
+            situacaoAluno: [{ aluno: { id: "", ra: "", nome: "" }, situacao: "Presente" }]
         },
         created: function () {
-            this.$http.get("http://localhost:8081/aula/").then(function (response) {
+            this.$http.get("http://localhost:3000/aula/").then(function (response) {
                 this.aulas = response.body;
             }, function (response) {
                 console.log("nao funcionou");
             })
 
-            this.$http.get("http://localhost:8081/aluno/").then(function (response) {
-                this.alunos = response.body;
+            this.$http.get("http://localhost:3000/turma/").then(function (response) {
+                this.turmas = response.body;
             }, function (response) {
                 console.log("nao funcionou");
             })
         },
         methods: {
             cadastrar: function () {
-                this.$http.post("http://localhost:8081/turma/", this.turma).then(function (response) {
-                    this.turmas.push(response.body);
+                this.$http.post("http://localhost:3000/aula/", this.aula).then(function (response) {
+                    console.log(this.aula);
                 }, function (response) {
-                    console.log(this.turma);
+                    console.log(this.aula);
                 })
             },
-
-            cadastrarTurmaAluno: function () {
-                this.$http.put("http://localhost:8081/turma/aluno/" + this.selectedTurma, this.selectedAluno).then(function (response) {
-                }, function (response) {
-                    console.log("nao funcionou");
-                })
-            },
-            
-            formatarData: function(date) {
-                date = new Date(date);
-                dataFormatada = new Date(date.getDay()+"/"+date.getMonth()+"/"+date.getFullYear());
-                return date;
-        	}
+            popularListaPresenca: function (alunosTurma) {
+                for (i = 0; i < alunosTurma.length; i++) {
+                    this.aula.listaPresenca.push({ aluno: alunosTurma[i], situacao: "Presente" });
+                }
+                this.listaPresenca = this.aula.listaPresenca;
+            }
         },
     });
 

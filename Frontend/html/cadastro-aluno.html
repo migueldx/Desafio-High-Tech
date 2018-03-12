@@ -76,13 +76,13 @@
         },
         created:
         function () {
-            this.$http.get("http://localhost:8081/aluno/").then(function (response) {
+            this.$http.get("http://localhost:3000/aluno/").then(function (response) {
                 this.alunos = response.body;
             }, function (response) {
                 console.log("nao funcionou");
             })
 
-            this.$http.get("http://localhost:8081/turma/").then(function (response) {
+            this.$http.get("http://localhost:3000/turma/").then(function (response) {
                 this.turmas = response.body;
             }, function (response) {
                 console.log("nao funcionou");
@@ -90,7 +90,7 @@
         },
         methods: {
             cadastrar: function () {
-                this.$http.post("http://localhost:8081/aluno/", this.aluno).then(function (response) {
+                this.$http.post("http://localhost:3000/aluno/", this.aluno).then(function (response) {
                     this.alunos.push(response.body);
                 }, function (response) {
                     console.log("nao funcionou");

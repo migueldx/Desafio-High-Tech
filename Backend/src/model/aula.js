@@ -12,7 +12,7 @@ const schema = new Schema({
     },
 
     data: {
-        type: Date,
+        type: String,
         required: true
     },
 
@@ -25,7 +25,6 @@ const schema = new Schema({
         situacao: {
             type: String,
             required: true,
-            enum: ['Presente', 'Ausente'],
             default: 'Presente'
         },
     }],

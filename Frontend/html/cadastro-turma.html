@@ -106,13 +106,13 @@
             idTurma: null
         },
         created: function () {
-            this.$http.get("http://localhost:8081/turma/").then(function (response) {
+            this.$http.get("http://localhost:3000/turma/").then(function (response) {
                 this.turmas = response.body;
             }, function (response) {
                 console.log("nao funcionou");
             })
 
-            this.$http.get("http://localhost:8081/aluno/").then(function (response) {
+            this.$http.get("http://localhost:3000/aluno/").then(function (response) {
                 this.alunos = response.body;
             }, function (response) {
                 console.log("nao funcionou");
@@ -120,14 +120,14 @@
         },
         methods: {
             cadastrar: function () {
-                this.$http.post("http://localhost:8081/turma/", this.turma).then(function (response) {
+                this.$http.post("http://localhost:3000/turma/", this.turma).then(function (response) {
                     this.turmas.push(response.body);
                 }, function (response) {
                     console.log(this.turma);
                 })
             },
             cadastrarTurmaAluno: function () {
-                this.$http.put("http://localhost:8081/turma/aluno/"+ this.selectedTurma, this.selectedAluno).then(function (response) {
+                this.$http.put("http://localhost:3000/turma/aluno/"+ this.selectedTurma, this.selectedAluno).then(function (response) {
                 }, function (response) {
                     console.log("nao funcionou");
                 })
