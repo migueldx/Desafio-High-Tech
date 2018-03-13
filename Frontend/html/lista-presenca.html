@@ -117,6 +117,7 @@
                 })
             },
             popularListaPresenca: function (alunosTurma) {
+                this.aula.listaPresenca = [];
                 for (i = 0; i < alunosTurma.length; i++) {
                     this.aula.listaPresenca.push({ aluno: alunosTurma[i], situacao: "Presente" });
                 }
