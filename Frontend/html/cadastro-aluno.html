@@ -32,7 +32,7 @@
     <!-- FIM Barra de Navegaçao-->
 
     <div id="application" class="container">
-        <form>
+        <form v-on:submit="submit()">
             <h2>Cadastro de Alunos</h2>
             <div class="input-group">
                 <span class="input-group-addon">Ra</span>
@@ -43,7 +43,8 @@
                 <input id="input-nome" type="text" v-model="aluno.nome" class="form-control" name="msg" placeholder="Digite o nome do aluno">
             </div><br>
             <div>
-                <button v-on:click="cadastrar" class="btn btn-success btn-lg pull-left">Salvar</button>
+                <input type="submit" class="btn btn-success btn-lg pull-left" v-model="aluno.id === null ? 'Salvar': 'Atualizar'">
+                <button type="button" v-on:click="limpar()" class="btn btn-default btn-lg pull-left"> Limpar </button>
             </div>
         </form>
 
@@ -53,12 +54,17 @@
                 <tr>
                     <th>RA</th>
                     <th>NOME</th>
+                    <th>AÇÕES</th>
                 </tr>
             </thead>
             <tbody v-for="aluno in alunos">
                 <tr>
                     <td>{{aluno.ra}} </td>
                     <td>{{aluno.nome}}</td>
+                    <td>
+                        <button type="button" v-on:click="editarAluno(aluno)" class="btn btn-warning">Editar</button>
+                        <button type="button" v-on:click="deletar(aluno)" class="btn btn-danger">Remover</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -69,34 +75,65 @@
     var app = new Vue({
         el: '#application',
         data: {
-            aluno: { id: "", ra: "", nome: "" },
-            turma: { id: "", nome: "", alunos: [] },
+            aluno: { id: null, ra: "", nome: "" },
             alunos: [],
-            turmas: []
         },
-        created:
-        function () {
-            this.$http.get("http://localhost:3000/aluno/").then(function (response) {
-                this.alunos = response.body;
-            }, function (response) {
-                console.log("nao funcionou");
-            })
-
-            this.$http.get("http://localhost:3000/turma/").then(function (response) {
-                this.turmas = response.body;
-            }, function (response) {
-                console.log("nao funcionou");
-            })
+        created: function () {
+            this.listarTodos();
         },
         methods: {
-            cadastrar: function () {
-                this.$http.post("http://localhost:3000/aluno/", this.aluno).then(function (response) {
-                    this.alunos.push(response.body);
+            listarTodos: function () {
+                this.$http.get("http://localhost:3000/aluno/").then(function (response) {
+                    this.alunos = response.body;
                 }, function (response) {
                     console.log("nao funcionou");
                 })
+            },
+
+            cadastrar: function () {
+                this.$http.post("http://localhost:3000/aluno/", this.aluno).then(function (response) {
+                    this.listarTodos();
+                    this.limpar();
+                }, function (response) {
+                    console.log("nao funcionou");
+                })
+            },
+
+            editar: function () {
+                this.$http.put("http://localhost:3000/aluno/", this.aluno).then(function (response) {
+                    this.listarTodos();
+                    this.limpar();
+                }, function (response) {
+                    console.log("nao funcionou");
+                })
+            },
+            
+            deletar: function (alunoExcluir) {
+                this.$http.delete("http://localhost:3000/aluno/" + alunoExcluir._id).then(function (response) {
+                    this.listarTodos();
+                }, function (response) {
+                    console.log(alunoExcluir);
+                })
+            },
+
+            editarAluno: function (alunoAlterar) {
+                this.aluno = Vue.util.extend({}, alunoAlterar);
+            },
+
+            limpar: function () {
+                this.aluno = { id: null, ra: "", nome: "" };
+            },
+
+            
+
+            submit: function () {
+                if (this.aluno.id === null) {
+                    this.cadastrar();
+                } else {
+                    this.editar();
+                }
             }
-        },
+        }
     });
 
 </script>

@@ -37,9 +37,9 @@ exports.getByTag = async (tag) => {
     return res;
 }
 
-exports.update = async (id, data) => {
+exports.update = async (data) => {
     await Aluno
-        .findByIdAndUpdate(id, {
+        .findByIdAndUpdate(data._id, {
             $set: {
                 nome: data.nome
             },
@@ -48,6 +48,6 @@ exports.update = async (id, data) => {
 
 exports.delete = async (id) => {
     await Aluno
-        .findOneAndRemove(id);
+        .findOneAndRemove({'_id' : id});
 
 }

@@ -12,8 +12,8 @@ router.get('/:ra', controller.getByRa);
 
 router.get('/admin/:id', controller.getById);
 
-router.put('/:id', controller.put) ;
+router.put('/', controller.put) ;
 
-router.delete('/', controller.delete);
+router.delete('/:id', controller.delete);
 
 module.exports = router;

@@ -58,7 +58,7 @@ exports.getByTag = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
     try {
-        await repository.update(req.params.id, req.body)
+        await repository.update(req.body)
         res.status(201).send({ message: 'Aluno atualizado com sucesso!' });
     } catch (e) {
         res.status(500).send({
@@ -69,7 +69,7 @@ exports.put = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     try {
-        await repository.delete(req.body.id)
+        await repository.delete(req.params.id)
         res.status(200).send({ message: 'Aluno removido com sucesso!' });
     } catch (e) {
         res.status(500).send({

@@ -40,7 +40,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">Data</span>
                     <input id="input-data" type="date" v-model="aula.data" class="form-control" name="msg">
-                </div><br>
+                </div><br> 
                 <div class="input-group"><label>Selecione a Turma: </label>
                     <select v-model="aula.turma" :options="turmas" class="form-control" @change="popularListaPresenca(aula.turma.alunos)"> 
                     <option v-for="turma in turmas" v-bind:value="turma">{{turma.nome}}</option>
@@ -116,6 +116,7 @@
                     console.log(this.aula);
                 })
             },
+
             popularListaPresenca: function (alunosTurma) {
                 this.aula.listaPresenca = [];
                 for (i = 0; i < alunosTurma.length; i++) {
