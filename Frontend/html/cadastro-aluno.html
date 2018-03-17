@@ -43,7 +43,7 @@
                 <input id="input-nome" type="text" v-model="aluno.nome" class="form-control" name="msg" placeholder="Digite o nome do aluno">
             </div><br>
             <div>
-                <input type="submit" class="btn btn-success btn-lg pull-left" v-model="aluno.id === null ? 'Salvar': 'Atualizar'">
+                <input type="submit" class="btn btn-success btn-lg pull-left" v-model="aluno._id === null ? 'Salvar': 'Atualizar'">
                 <button type="button" v-on:click="limpar()" class="btn btn-default btn-lg pull-left"> Limpar </button>
             </div>
         </form>
@@ -63,7 +63,7 @@
                     <td>{{aluno.nome}}</td>
                     <td>
                         <button type="button" v-on:click="editarAluno(aluno)" class="btn btn-warning">Editar</button>
-                        <button type="button" v-on:click="deletar(aluno)" class="btn btn-danger">Remover</button>
+                        <button type="button" v-on:click="deletar(aluno._id)" class="btn btn-danger">Remover</button>
                     </td>
                 </tr>
             </tbody>
@@ -75,7 +75,7 @@
     var app = new Vue({
         el: '#application',
         data: {
-            aluno: { id: null, ra: "", nome: "" },
+            aluno: { _id: null, ra: "", nome: "" },
             alunos: [],
         },
         created: function () {
@@ -108,8 +108,8 @@
                 })
             },
             
-            deletar: function (alunoExcluir) {
-                this.$http.delete("http://localhost:3000/aluno/" + alunoExcluir._id).then(function (response) {
+            deletar: function (idAluno) {
+                this.$http.delete("http://localhost:3000/aluno/" + idAluno).then(function (response) {
                     this.listarTodos();
                 }, function (response) {
                     console.log(alunoExcluir);
@@ -121,13 +121,13 @@
             },
 
             limpar: function () {
-                this.aluno = { id: null, ra: "", nome: "" };
+                this.aluno = { _id: null, ra: "", nome: "" };
             },
 
             
 
             submit: function () {
-                if (this.aluno.id === null) {
+                if (this.aluno._id == null) {
                     this.cadastrar();
                 } else {
                     this.editar();
